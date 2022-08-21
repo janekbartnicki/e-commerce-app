@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-    console.log(req.body)
+    console.log(req.body);
 })
 
-app.listen(3000)
+app.listen(3000);
