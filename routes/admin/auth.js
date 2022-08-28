@@ -1,12 +1,4 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cookieSession = require('cookie-session');
-const usersRepo = require('./repositories/users');
-
-const app = express();
-
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieSession({keys: ['Gu8y2hdAm8IWbvpa28a9a1d017c']}))
+const usersRepo = require('../../repositories/users');
 
 app.get('/signup', (req, res) => {
     res.send(`
@@ -20,7 +12,7 @@ app.get('/signup', (req, res) => {
             </form>
         </div>
     `);
-})
+});
 
 app.post('/signup', async (req, res) => {
     const {email, password, passwordConfirmation} = req.body;
@@ -76,6 +68,4 @@ app.post('/signin', async (req, res) => {
     req.session.userId = user.id;
 
     res.send(`Logged as ${req.session.userId}`);
-})
-
-app.listen(3000);
+});

@@ -1,7 +1,9 @@
 const fs = require('fs');
 const fsPromises = require('fs/promises');
 const crypto = require('crypto');
-const { isModuleNamespaceObject } = require('util/types');
+const util = require('util');
+
+const scrypt = util.promisify(crypto.scrypt);
 
 class UsersRepository {
     constructor(filename) {
@@ -27,10 +29,19 @@ class UsersRepository {
     async create(attrs) {
         const records = await this.getAll();
         attrs.id = this.getRandomId();
-        records.push(attrs);
+
+        const salt = crypto.randomBytes(8).toString('hex');
+        const buffer = await scrypt(attrs.password, salt, 64);
+
+        const record = ({
+            ...attrs,
+            password: `${buffer.toString('hex')}.${salt}`
+        });
+
+        records.push(record);
 
         await this.writeAll(records);
-        return attrs;
+        return record;
     }
 
     async writeAll(records) {
@@ -62,6 +73,13 @@ class UsersRepository {
 
         Object.assign(record, attrs);
         await this.writeAll(records);
+    }
+
+    async comparePassword(saved, suppiled) {
+        const [hashed, salt] = saved.split('.');
+        const hashedSuppiled = await scrypt(suppiled, salt, 64);
+
+        return hashed === hashedSuppiled.toString('hex');
     }
 
     async getOneBy(filters) {
