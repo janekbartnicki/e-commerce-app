@@ -1,26 +1,38 @@
 const layout = require('../layout');
+const { getError } = require('../../helpers');
 
-const getError = (errors, prop) => {
-    try {
-        return '<br>' + errors.mapped()[prop].msg;
-    } catch(err) {
-        return '';
-    }
-}
-
-module.exports = ({req, errors}) => {
-    return layout({content: `
-        <div>
-            Logged as user by id: ${req.session.userId}.
+module.exports = ({ req, errors }) => {
+  return layout({
+    content: `
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-one-quarter">
             <form method="POST">
-                <input type="text" name="email" id="" placeholder="E-mail">
-                ${getError(errors, 'email')}<br>
-                <input type="text" name="password" id="" placeholder="Password">
-                ${getError(errors, 'password')}<br>
-                <input type="text" name="passwordConfirmation" id="" placeholder="Confirm password">
-                ${getError(errors, 'passwordConfirmation')}<br>
-                <button>Sign Up</button>
+              <h1 class="title">Sign Up</h1>
+              <div class="field">
+                <label class="label">Email</label>
+                <input required class="input" placeholder="Email" name="email" />
+                <p class="help is-danger">${getError(errors, 'email')}</p>
+              </div>
+              <div class="field">
+                <label class="label">Password</label>
+                <input required class="input" placeholder="Password" name="password" type="password" />
+                <p class="help is-danger">${getError(errors, 'password')}</p>
+              </div>
+              <div class="field">
+                <label class="label">Password Confirmation</label>
+                <input required class="input" placeholder="Password Confirmation" name="passwordConfirmation" type="password" />
+                <p class="help is-danger">${getError(
+                  errors,
+                  'passwordConfirmation'
+                )}</p>
+              </div>
+              <button class="button is-primary">Submit</button>
             </form>
+            <a href="/signin">Have an account? Sign In</a>
+          </div>
         </div>
-        `, title: 'Sign Up'});
+      </div>
+    `
+  });
 };
