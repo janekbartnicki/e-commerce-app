@@ -18,7 +18,7 @@ router.post('/signup', [requireEmail, requirePassword, requirePasswordConfirmati
 
         req.session.userId = user.id;
 
-        res.send(`Account for ${email} e-mail created.`);
+        res.redirect('/admin/products');
 });
 
 router.get('/signout', (req, res) => {
@@ -37,7 +37,7 @@ router.post('/signin',[requireEmailExists, requireValidPasswordForUser], handleE
         const user = await usersRepo.getOneBy({email});
         req.session.userId = user.id;
 
-        res.send(`Logged as ${req.session.userId}`);
+        res.redirect('/admin/products');
 });
 
 module.exports = router;

@@ -1,1 +1,20 @@
-[]
+[
+    {
+        "title": "test",
+        "price": 10,
+        "image": null,
+        "id": "a83iks12"
+    },
+    {
+        "title": "test2",
+        "price": 10,
+        "image": null,
+        "id": "b83i1s12"
+    },
+    {
+        "title": "test3",
+        "price": 10,
+        "image": null,
+        "id": "c8si1s12"
+    }
+]
